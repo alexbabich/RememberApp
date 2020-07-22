@@ -76,9 +76,16 @@ struct ContentView: View {
                 
             }){
                 HStack {
+                    Image(systemName: "plus.circle.fill")
                     
+                    Text("new")
                 }
-            }, trailing: )
+            }, trailing: ZStack {
+                Circle()
+                    .fill(Color.black.opacity(0.78))
+                
+                Text("2")
+            })
         }
     }
 }
