@@ -80,11 +80,14 @@ struct ContentView: View {
                     
                     Text("new")
                 }
+                .foregroundColor(Color.white)
             }, trailing: ZStack {
                 Circle()
-                    .fill(Color.black.opacity(0.78))
+                    .fill(Color.black.opacity(0.9))
+                    .frame(width: 30, height: 30)
                 
                 Text("2")
+                    .foregroundColor(Color.white)
             })
         }
     }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		553A52B324C77E450021D9AA /* Remmebers+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553A52B124C77E450021D9AA /* Remmebers+CoreDataClass.swift */; };
 		553A52B424C77E450021D9AA /* Remmebers+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553A52B224C77E450021D9AA /* Remmebers+CoreDataProperties.swift */; };
+		5546EBA924C864D300FCF6F8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5546EBA824C864D300FCF6F8 /* Extension.swift */; };
+		5546EBAD24C86C3E00FCF6F8 /* CreaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5546EBAC24C86C3E00FCF6F8 /* CreaterView.swift */; };
 		55F8B72F24C734EB00240944 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F8B72E24C734EB00240944 /* AppDelegate.swift */; };
 		55F8B73124C734EB00240944 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F8B73024C734EB00240944 /* SceneDelegate.swift */; };
 		55F8B73424C734EB00240944 /* RememberApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55F8B73224C734EB00240944 /* RememberApp.xcdatamodeld */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		553A52B124C77E450021D9AA /* Remmebers+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remmebers+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		553A52B224C77E450021D9AA /* Remmebers+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remmebers+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		5546EBA824C864D300FCF6F8 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		5546EBAC24C86C3E00FCF6F8 /* CreaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreaterView.swift; sourceTree = "<group>"; };
 		55F8B72B24C734EB00240944 /* RememberApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RememberApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F8B72E24C734EB00240944 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F8B73024C734EB00240944 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,8 +61,18 @@
 			children = (
 				55F8B72E24C734EB00240944 /* AppDelegate.swift */,
 				55F8B73024C734EB00240944 /* SceneDelegate.swift */,
+				5546EBA824C864D300FCF6F8 /* Extension.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		5546EBAB24C866F300FCF6F8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				55F8B73524C734EB00240944 /* ContentView.swift */,
+				5546EBAC24C86C3E00FCF6F8 /* CreaterView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		55F8B72224C734EA00240944 = {
@@ -82,7 +96,7 @@
 			children = (
 				5534ABEB24C77D7700D195BA /* App */,
 				5534ABEA24C77D6500D195BA /* Requests */,
-				55F8B73524C734EB00240944 /* ContentView.swift */,
+				5546EBAB24C866F300FCF6F8 /* Views */,
 				55F8B73724C734EE00240944 /* Assets.xcassets */,
 				55F8B73C24C734EE00240944 /* LaunchScreen.storyboard */,
 				55F8B73F24C734EE00240944 /* Info.plist */,
@@ -173,8 +187,10 @@
 			files = (
 				55F8B72F24C734EB00240944 /* AppDelegate.swift in Sources */,
 				553A52B324C77E450021D9AA /* Remmebers+CoreDataClass.swift in Sources */,
+				5546EBA924C864D300FCF6F8 /* Extension.swift in Sources */,
 				55F8B73424C734EB00240944 /* RememberApp.xcdatamodeld in Sources */,
 				55F8B73624C734EB00240944 /* ContentView.swift in Sources */,
+				5546EBAD24C86C3E00FCF6F8 /* CreaterView.swift in Sources */,
 				553A52B424C77E450021D9AA /* Remmebers+CoreDataProperties.swift in Sources */,
 				55F8B73124C734EB00240944 /* SceneDelegate.swift in Sources */,
 			);
