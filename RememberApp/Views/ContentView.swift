@@ -20,10 +20,15 @@ struct ContentView: View {
     
     @State var image : Data = .init(count: 0)
     
+    @State var show = false
+    
+    @State var text = ""
+    
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(remembers, id: \.names) { reme in
+                SearchsBar(text: $text)
+                ForEach(remembers.filter({self.text.isEmpty ? true : $0.names!.localizedCaseInsensitiveContains(self.text)}), id: \.names) { reme in
                     VStack(alignment: .leading) {
                         Text("\(reme.names ?? "")")
                             .font(.headline)
@@ -73,7 +78,7 @@ struct ContentView: View {
             }
             .navigationBarTitle("Remember", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
-                
+                self.show.toggle()
             }){
                 HStack {
                     Image(systemName: "plus.circle.fill")
@@ -83,12 +88,15 @@ struct ContentView: View {
                 .foregroundColor(Color.white)
             }, trailing: ZStack {
                 Circle()
-                    .fill(Color.black.opacity(0.9))
+                    .fill(Color.black.opacity(0.55))
                     .frame(width: 30, height: 30)
                 
-                Text("2")
+                Text("\(self.remembers.count)")
                     .foregroundColor(Color.white)
             })
+        }
+        .sheet(isPresented: self.$show) {
+            CreaterView().environment(\.managedObjectContext, self.moc)
         }
     }
 }
