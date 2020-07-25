@@ -28,17 +28,18 @@ struct ContentView: View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 SearchsBar(text: $text)
-                ForEach(remembers.filter({self.text.isEmpty ? true : $0.names!.localizedCaseInsensitiveContains(self.text)}), id: \.names) { reme in
+                ForEach(remembers.filter({self.text.isEmpty ? true : $0.names!.localizedCaseInsensitiveContains(self.text)}), id: \.imageD) { reme in
                     VStack(alignment: .leading) {
                         Text("\(reme.names ?? "")")
                             .font(.headline)
+                            .italic()
                             .underline()
                         
                         Image(uiImage: UIImage(data: reme.imageD ?? self.image)!)
                             .renderingMode(.original)
                             .resizable()
                             .scaledToFit()
-                            .cornerRadius(20)
+                            .cornerRadius(14)
                         
                         HStack {
                             ForEach(0..<5, id: \.self) { star in
@@ -74,6 +75,7 @@ struct ContentView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
+                    .padding()
                 }
             }
             .navigationBarTitle("Remember", displayMode: .inline)

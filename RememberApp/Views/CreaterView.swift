@@ -47,23 +47,33 @@ struct CreaterView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text("Person name")
-                    TextField("names ...", text: self.$names)
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(width: UIScreen.main.bounds.width - 40, height: 1)
                     
-                    Text("Description")
-                    TextField("detail ...", text: self.$detail)
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(width: UIScreen.main.bounds.width - 40, height: 1)
+                    Group {
+                        Text("Person name")
+                            .bold()
+                        TextField("names ...", text: self.$names)
+                        Rectangle()
+                            .fill(Color.gray)
+                            .frame(width: UIScreen.main.bounds.width - 40, height: 1)
+                    }
                     
-                    Text("Picture date")
-                    TextField("date ...", text: self.$date)
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(width: UIScreen.main.bounds.width - 40, height: 1)
+                    Group {
+                        Text("Description")
+                            .bold()
+                        TextField("detail ...", text: self.$detail)
+                        Rectangle()
+                            .fill(Color.gray)
+                            .frame(width: UIScreen.main.bounds.width - 40, height: 1)
+                    }
+                    
+                    Group {
+                        Text("Picture date")
+                            .bold()
+                        TextField("date ...", text: self.$date)
+                        Rectangle()
+                            .fill(Color.gray)
+                            .frame(width: UIScreen.main.bounds.width - 40, height: 1)
+                    }
                 }
                 .padding()
                 
@@ -91,33 +101,46 @@ struct CreaterView: View {
                         .font(.system(size: 23))
                         .foregroundColor(.white)
                 }
-                .background(Color.gray)
+                .background((self.image.count != 0 &&
+                            self.names.count > 5 &&
+                            self.detail.count > 10 &&
+                            self.date.count >= 10) ? Color("navi") : Color.gray)
                 .cornerRadius(10)
+                .disabled((self.image.count != 0 &&
+                            self.names.count > 5 &&
+                            self.detail.count > 10 &&
+                            self.date.count >= 10) ? false : true)
                 
                 Spacer()
             }
+            .padding(.top)
             .navigationBarTitle(Text(""), displayMode: .inline)
             .navigationBarItems(leading:
                 Text("Add Remembers")
                     .foregroundColor(.white)
             , trailing:
-                Text("Cancel")
-                    .foregroundColor(.white)
+                
+                Button(action: {
+                    self.dismiss.wrappedValue.dismiss()
+                }) {
+                    Text("Cancel")
+                        .foregroundColor(.white)
+                }
             )
-                .actionSheet(isPresented: self.$photo) {
-                    ActionSheet(title: Text("select photo"),
-                                message: Text(""),
-                                buttons: [
-                                    .default(Text("Camera")) {
-                                        self.sourceType = .camera
-                                        self.show.toggle()
-                                    },
-                                    .default(Text("Photo library")) {
-                                        self.sourceType = .photoLibrary
-                                        self.show.toggle()
-                                    },
-                                    .cancel()
-                                ])
+            .actionSheet(isPresented: self.$photo) {
+                ActionSheet(title: Text("select photo"),
+                    message: Text(""),
+                    buttons: [
+                        .default(Text("Camera")) {
+                            self.sourceType = .camera
+                            self.show.toggle()
+                        },
+                        .default(Text("Photo library")) {
+                            self.sourceType = .photoLibrary
+                            self.show.toggle()
+                        },
+                        .cancel()
+                    ])
             }
         }
         .sheet(isPresented: self.$show) {
