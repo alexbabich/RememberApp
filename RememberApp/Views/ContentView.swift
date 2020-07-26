@@ -21,6 +21,8 @@ struct ContentView: View {
     @State var image : Data = .init(count: 0)
     
     @State var show = false
+    @State var alert = false
+    @State var delete = false
     
     @State var text = ""
     
@@ -47,8 +49,8 @@ struct ContentView: View {
                                     Button(action: {
                                         reme.favo = star
                                     }) {
-                                        Image(systemName: reme.favo >= 0 ? "star.fill" : "star")
-                                            .foregroundColor((reme.favo >= 0) ? Color.yellow : Color.gray)
+                                        Image(systemName: reme.favo >= star ? "star.fill" : "star")
+                                            .foregroundColor((reme.favo >= star) ? Color.yellow : Color.gray)
                                     }
                                     .onTapGesture {
                                         reme.favo = star
@@ -75,8 +77,33 @@ struct ContentView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
-                    .padding()
+                    .contextMenu {
+                        Button(action: {
+                            UIImageWriteToSavedPhotosAlbum(UIImage(data: reme.imageD ?? self.image)!, 0, nil, nil)
+                            self.alert.toggle()
+                        }) {
+                            HStack {
+                                Text("Save to gallery")
+                                Image(systemName: "square.and.arrow.down")
+                                
+                            }
+                        }
+                        
+                        Button(action: {
+                            self.delete.toggle()
+                        }) {
+                            HStack {
+                                Text("Delete")
+                                Image(systemName: "trash")
+                                
+                            }
+                        }
+                    }
+                    .alert(isPresented: self.$delete) {
+                        Alert(title: Text("No Undo"), message: Text("Are you sure that you want to delete this remember?"), primaryButton: .default(Text("Delete").foregroundColor(.red)) { self.delete(at: IndexSet.init(arrayLiteral: 0)) }, secondaryButton: .cancel())
+                    }
                 }
+                .padding()
             }
             .navigationBarTitle("Remember", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
@@ -84,7 +111,6 @@ struct ContentView: View {
             }){
                 HStack {
                     Image(systemName: "plus.circle.fill")
-                    
                     Text("new")
                 }
                 .foregroundColor(Color.white)
@@ -96,10 +122,23 @@ struct ContentView: View {
                 Text("\(self.remembers.count)")
                     .foregroundColor(Color.white)
             })
+            
+            .alert(isPresented: self.$alert) {
+                Alert(title: Text("Saved Photo"), message: Text("The photo was saved on your Photo Gallery"), dismissButton: .default(Text("Ok")))
+            }
         }
         .sheet(isPresented: self.$show) {
             CreaterView().environment(\.managedObjectContext, self.moc)
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        
+        for index in offsets {
+            let delet = remembers[index]
+            self.moc.delete(delet)
+        }
+        try! self.moc.save()
     }
 }
 

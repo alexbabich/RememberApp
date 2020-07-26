@@ -17,10 +17,12 @@ struct CreaterView: View {
     @State var detail = ""
     @State var date = ""
     
-    @State var show = false
     @State var sourceType : UIImagePickerController.SourceType = .camera
     @State var photo = false
-//    @ObservedObject var users = EditView()
+    @State var show = false
+    @State var create = false
+    @State var ani = false
+    @State var flash = false
     
     var body: some View {
         NavigationView {
@@ -39,10 +41,21 @@ struct CreaterView: View {
                     Button(action: {
                         self.photo.toggle()
                     }) {
-                        Image(systemName: "camera.fill")
+                        ZStack {
+                         Image(systemName: "camera.fill")
                             .resizable()
-                            .frame(width: 60, height: 60)
-                            .foregroundColor(Color.gray.opacity(0.70))
+                            .frame(width: 70, height: 60)
+                            withAnimation(Animation.default.delay(0.2)) {
+                                Circle()
+                                    .fill(self.flash ? Color.white : Color.white.opacity(0.40))
+                                    .frame(width: 12, height: 12)
+                                    .offset(x: 0, y: 3)
+                            }
+                            .animation(Animation.default.delay(self.flash ? 0.6 : 0.10).repeatForever(autoreverses: self.flash))
+                            .onAppear {
+                                self.flash.toggle()
+                            }
+                        }
                     }
                 }
                 
@@ -51,7 +64,7 @@ struct CreaterView: View {
                     Group {
                         Text("Person name")
                             .bold()
-                        TextField("names ...", text: self.$names)
+                        TextField("Name the persone on the photo ...", text: self.$names)
                         Rectangle()
                             .fill(Color.gray)
                             .frame(width: UIScreen.main.bounds.width - 40, height: 1)
@@ -60,7 +73,7 @@ struct CreaterView: View {
                     Group {
                         Text("Description")
                             .bold()
-                        TextField("detail ...", text: self.$detail)
+                        TextField("Describe those moment ...", text: self.$detail)
                         Rectangle()
                             .fill(Color.gray)
                             .frame(width: UIScreen.main.bounds.width - 40, height: 1)
@@ -69,7 +82,7 @@ struct CreaterView: View {
                     Group {
                         Text("Picture date")
                             .bold()
-                        TextField("date ...", text: self.$date)
+                        TextField("Date of the taken photo ...", text: self.$date)
                         Rectangle()
                             .fill(Color.gray)
                             .frame(width: UIScreen.main.bounds.width - 40, height: 1)
@@ -78,22 +91,7 @@ struct CreaterView: View {
                 .padding()
                 
                 Button(action: {
-                    
-                    let new = Remmebers(context: self.moc)
-                    new.names = self.names
-                    new.imageD = self.image
-                    new.detail = self.detail
-                    new.date = self.date
-                    
-                    try? self.moc.save()
-                    
-                    self.names = ""
-                    self.image.count = 0
-                    self.detail = ""
-                    self.date = ""
-                    
-                    self.dismiss.wrappedValue.dismiss()
-                    
+                    self.create.toggle()
                 }) {
                     Text("Create new")
                         .bold()
@@ -111,9 +109,35 @@ struct CreaterView: View {
                             self.detail.count > 10 &&
                             self.date.count >= 10) ? false : true)
                 
+                if self.image.count != 0 {
+                    Image(uiImage: UIImage(data: self.image)!)
+                        .renderingMode(.original)
+                        .resizable()
+                        .scaledToFit()
+                        .cornerRadius(14)
+                        .padding()
+                } else {
+                    withAnimation(Animation.default.delay(0.1)
+                        .repeatForever(autoreverses: self.ani)) {
+                            HStack {
+                                Text("Preview")
+                                    .fontWeight(.heavy)
+                                
+                                Image(systemName: "photo")
+                                    .foregroundColor(Color.init("navi"))
+                            }
+                            .foregroundColor(Color.init("navi"))
+                            .scaleEffect(self.ani ? 1.20 : 1.50)
+                    }
+                    .animation(Animation.default.speed(0.1)
+                    .repeatForever(autoreverses: self.ani).delay(self.ani ? 1.0 : 1.0))
+                    .onAppear {
+                        self.ani.toggle()
+                    }
+                }
                 Spacer()
             }
-            .padding(.top)
+            .padding()
             .navigationBarTitle(Text(""), displayMode: .inline)
             .navigationBarItems(leading:
                 Text("Add Remembers")
@@ -127,6 +151,27 @@ struct CreaterView: View {
                         .foregroundColor(.white)
                 }
             )
+            .alert(isPresented: self.$create) {
+                Alert(title: Text("New remember"), message: Text("your remember \(names.uppercased()) will be added"), primaryButton: .default(Text("Yes")) {
+                    let new = Remmebers(context: self.moc)
+                    new.names = self.names
+                    new.imageD = self.image
+                    new.detail = self.detail
+                    new.date = self.date
+                    
+                    try? self.moc.save()
+                    
+                    self.names = ""
+                    self.image.count = 0
+                    self.detail = ""
+                    self.date = ""
+                    
+                    self.dismiss.wrappedValue.dismiss()
+                    }, secondaryButton: .default(Text("No")) {
+                        self.dismiss.wrappedValue.dismiss()
+                    })
+            }
+                
             .actionSheet(isPresented: self.$photo) {
                 ActionSheet(title: Text("select photo"),
                     message: Text(""),
